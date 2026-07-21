@@ -24,6 +24,16 @@ export const metadata: Metadata = {
   title: "Damian — IT Cost Optimization & Technology Strategy",
   description:
     "IT cost optimization and technology strategy for organizations that aren't in the business of technology.",
+  icons: {
+    icon: [
+      { url: "/vitalis-icon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [
+      { url: "/vitalis-icon-180.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -39,7 +49,7 @@ export default function RootLayout({
         <header className="border-b border-border">
           <div className="max-w-[760px] mx-auto px-7 py-6 flex items-center justify-between">
             <a href="/" className="font-display font-semibold text-base">
-              damian<span className="text-accent">.</span>
+              Vitalis Technology<span className="text-accent"></span>
             </a>
             <nav className="flex gap-7">
               <a
@@ -64,10 +74,8 @@ export default function RootLayout({
           </div>
         </header>
 
-        <main>{children}</main>
-
-        <section className="border-t border-border">
-          <div className="max-w-[760px] mx-auto px-7 py-12 flex justify-center">
+        <section className="border-b border-border">
+          <div className="max-w-[760px] mx-auto px-7 py-6 flex justify-center">
             <a
               href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3RYzWv-yZX9WSUnoAr8sFBV-YmpzKmx_gL-RoD7ojp28JJBAj-HRVkRhXxKpSwUYOT50idFV1u"
               target="_blank"
@@ -79,11 +87,13 @@ export default function RootLayout({
           </div>
         </section>
 
+        <main>{children}</main>
+
         <footer className="border-t border-border">
           <div className="max-w-[760px] mx-auto px-7 py-8 flex items-center justify-between font-mono text-xs text-secondary">
-            <span>© 2026 Damian — Toronto, ON</span>
+            <span>© 2026 Vitalis Technology — Toronto, ON</span>
             <span className="flex gap-5">
-              <a href="mailto:d.vidal@vitalisconsulting.ca" className="hover:text-primary transition-colors">
+              <a href="mailto:d.vidal@outlook.com" className="hover:text-primary transition-colors">
                 Email
               </a>
               <a href="https://www.linkedin.com/in/dcvidal/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
