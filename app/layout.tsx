@@ -66,14 +66,27 @@ export default function RootLayout({
 
         <main>{children}</main>
 
+        <section className="border-t border-border">
+          <div className="max-w-[760px] mx-auto px-7 py-12 flex justify-center">
+            <a
+              href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3RYzWv-yZX9WSUnoAr8sFBV-YmpzKmx_gL-RoD7ojp28JJBAj-HRVkRhXxKpSwUYOT50idFV1u"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-[12.5px] uppercase tracking-wider text-bg bg-accent hover:bg-accent-dim transition-colors px-6 py-3.5 rounded"
+            >
+              Book a free 15-min discovery call
+            </a>
+          </div>
+        </section>
+
         <footer className="border-t border-border">
           <div className="max-w-[760px] mx-auto px-7 py-8 flex items-center justify-between font-mono text-xs text-secondary">
             <span>© 2026 Damian — Toronto, ON</span>
             <span className="flex gap-5">
-              <a href="mailto:hello@example.com" className="hover:text-primary transition-colors">
+              <a href="mailto:d.vidal@vitalisconsulting.ca" className="hover:text-primary transition-colors">
                 Email
               </a>
-              <a href="#" className="hover:text-primary transition-colors">
+              <a href="https://www.linkedin.com/in/dcvidal/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
                 LinkedIn
               </a>
             </span>

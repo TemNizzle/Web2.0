@@ -4,7 +4,7 @@ const projects = [
   {
     name: "Vitalis Consulting",
     desc: "IT spend audits for SMBs, delivered through MSP partners.",
-    href: "#",
+    href: "https://www.vitalistechnology.com",
     status: null,
   },
   {
@@ -87,6 +87,8 @@ export default function Home() {
             <a
               key={p.name}
               href={p.href}
+              target={p.href.startsWith("http") ? "_blank" : undefined}
+              rel={p.href.startsWith("http") ? "noopener noreferrer" : undefined}
               className={`flex justify-between items-baseline gap-6 py-5 ${
                 i !== 0 ? "border-t border-border" : ""
               }`}
