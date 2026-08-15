@@ -2,16 +2,10 @@ import { getLatestPost, getAllPostsMeta } from "@/lib/posts";
 
 const projects = [
   {
-    name: "CalSync",
-    desc: "Connecting Toronto City events directly to your calender.",
-    href: "https://www.vitalistechnology.com",
-    status: "In Development",
-  },
-  {
-    name: "Court Digital",
-    desc: "A digital concierge concept for GTA tennis clubs.",
-    href: "#",
-    status: "In development",
+    name: "Sun Chaser",
+    desc: "Find sunny patios in Toronto and spend time outside.",
+    href: "https://sun.vitalistechnology.com",
+    status: "",
   },
 ];
 

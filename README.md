@@ -63,9 +63,9 @@ Fonts: Space Grotesk (headings), Source Serif 4 (body), IBM Plex Mono (dates, la
 
 ## Adding subdomains for other projects (next step)
 
-Once you have separate projects (e.g. Vitalis Consulting, the tennis club concept), the cleanest approach on Vercel is:
+Once you have separate projects (e.g. Vitalis Consulting, Sun Chaser), the cleanest approach on Vercel is:
 
-- **Separate Vercel projects**, each mapped to its own subdomain (`vitalis.yourdomain.com`, `courts.yourdomain.com`) via Domains settings — good if each project has its own codebase.
+- **Separate Vercel projects**, each mapped to its own subdomain (`vitalis.yourdomain.com`, `sun.yourdomain.com`) via Domains settings — good if each project has its own codebase.
 - **One repo, Next.js middleware** that reads the `Host` header and rewrites to a `/sites/[subdomain]` folder — good if you want to manage everything from this one project.
 
 Happy to build out either approach when you're ready — let me know which project you want to wire up first.
