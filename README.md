@@ -1,6 +1,12 @@
 # damian-site
 
-Personal site: homepage, blog, and a home for project links. Built with Next.js 14 (App Router) + Tailwind CSS.
+Damian's personal site — projects and thoughts. Homepage, three content kinds
+(essays, notes, projects), and an RSS feed. Built with Next.js 14 (App Router)
++ TypeScript + Tailwind, deployed to Vercel.
+
+See `SCOPE.md` for what this is and isn't. The one rule worth repeating: **content
+is the asset, the site is a skin** — everything durable is markdown in `content/`,
+and `lib/content.ts` is the only seam between the files and the pages.
 
 ## Run locally
 
@@ -9,63 +15,122 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000. The homepage pulls in whatever's in `content/blog` and shows the most recent post automatically.
+Open http://localhost:3000. Add or edit a markdown file under `content/` and it
+appears on save — no build step, no restart.
 
-## Writing blog posts
+```
+npm run build     # production build (also the type/route check)
+npm run lint
+```
 
-Add a markdown file to `content/blog/your-slug.md`:
+## Information architecture
+
+| path              | what |
+|-------------------|------|
+| `/`               | intro, `/now` line, recent thinking, projects, consulting (secondary) |
+| `/essays`         | essay index |
+| `/essays/[slug]`  | an essay |
+| `/notes`          | notes index, sorted by last tended |
+| `/notes/[slug]`   | a note |
+| `/projects`       | project index |
+| `/projects/[slug]`| a project write-up |
+| `/now`            | what Damian is doing this month |
+| `/about`          | bio |
+| `/consulting`     | the consulting pitch + discovery-call CTA |
+| `/feed.xml`       | RSS — essays + notes |
+
+`/blog` and `/blog/[slug]` redirect to `/essays` (old links keep working).
+
+## Authoring content
+
+Every file needs YAML frontmatter. The three shapes:
+
+### Essay — `content/essays/your-slug.md`
 
 ```markdown
 ---
-title: "Your post title"
-date: "2026-07-15"
-excerpt: "One or two sentence summary shown on the homepage and blog index."
-tag: "Strategy"
+title: "Your essay title"
+date: "2026-08-25"
+excerpt: "One or two sentences shown in indexes and the feed."
+tag: "Build"
+project: "sun-chaser"   # optional — slug of a project in content/projects/
 ---
 
-Your post content here, written in plain markdown.
+Plain markdown.
 ```
 
-The homepage always shows the most recent post by `date`. No build step or restart needed in dev — just save the file.
+### Note — `content/notes/your-slug.md`
 
-## Project structure
+```markdown
+---
+title: "Your note title"
+planted: "2026-06-12"
+updated: "2026-09-03"
+tags: ["product", "trust"]
+excerpt: "One sentence shown in the notes index."
+stage: "evergreen"   # optional: seedling | budding | evergreen.
+                     # Omitted → derived from how long ago it was planted.
+---
 
+Notes can link to other notes with [[other-note-slug]] or
+[[other-note-slug|custom link text]].
 ```
-app/
-  layout.tsx        — shared header/footer, fonts, global metadata
-  page.tsx           — homepage (hero, latest entry, projects)
-  about/page.tsx      — about page
-  blog/page.tsx        — full post index
-  blog/[slug]/page.tsx  — individual post page
-lib/posts.ts         — reads and parses markdown from content/blog
-content/blog/*.md    — your posts live here
+
+### Project — `content/projects/your-slug.md`
+
+```markdown
+---
+name: "Sun Chaser"
+summary: "One line shown in the projects list and as the page subtitle."
+status: "live"        # live | building | archived (free text; "live" shows green)
+url: "https://sun.vitalistechnology.com"   # optional — the live deployment
+repo: "https://github.com/..."             # optional
+stack: ["Next.js", "Vercel", "Mapbox GL"]
+year: 2026
+order: 1              # optional — lower sorts first; otherwise sorted by year
+---
+
+The write-up: the problem, what you built, what you'd do next. Markdown.
 ```
+
+Growth stage, when `stage` is omitted: `seedling` for the first ~30 days after
+`planted`, `budding` to ~120 days, `evergreen` after. Set `stage` explicitly to
+override.
+
+Entry numbers on the homepage and indexes (`No. 001`, `N-04`, `P-01`) are
+computed at render time from sort order — they are not stored in frontmatter.
 
 ## Design tokens
 
-Colors, fonts, and spacing live in `tailwind.config.ts` and `app/globals.css`. The palette:
+Colors are CSS variables in `app/globals.css`, mapped to Tailwind names in
+`tailwind.config.ts`. The site follows the OS light/dark setting
+(`prefers-color-scheme`) — there is no in-page toggle.
 
-- `bg` `#10151B` — page background (ink navy)
-- `surface` `#171E26` — cards
-- `border` `#2A323C` — hairlines
-- `primary` `#ECE8DE` — body text
-- `secondary` `#8D95A0` — muted text
-- `accent` `#C9A961` — the one accent color (links, the "filed" stamp)
+Light theme (warm paper):
 
-Fonts: Space Grotesk (headings), Source Serif 4 (body), IBM Plex Mono (dates, labels, nav).
+| token         | light     | role |
+|---------------|-----------|------|
+| `bg`          | `#F3F0E6` | page background |
+| `surface`     | `#F8F5EC` | the specimen card |
+| `border`      | `#D9D2BE` | hairlines |
+| `rule`        | `#1E1D18` | structural 1.5px rules |
+| `primary`     | `#1E1D18` | body text |
+| `secondary`   | `#5F5A4C` | excerpts, muted body |
+| `muted`       | `#96907C` | kickers, labels |
+| `faint`       | `#B0A88F` | entry numbers |
+| `accent`      | `#8A6A2E` | links |
+| `grow`        | `#6E8A5F` | "live" / evergreen cues |
+
+Dark theme redefines the same tokens (brown-black ground, warmer accent) in the
+`@media (prefers-color-scheme: dark)` block of `app/globals.css`.
+
+Fonts: Space Grotesk (display / wordmark / entry titles), Source Serif 4 (body),
+IBM Plex Mono (dates, labels, nav).
 
 ## Deploying to Vercel
 
-1. Push this project to a GitHub repo.
-2. Import it in Vercel (vercel.com/new).
-3. Vercel auto-detects Next.js — no config needed. Deploy.
-4. In Vercel → Settings → Domains, add your domain.
+Push to GitHub, import at vercel.com/new (Next.js auto-detected, no config),
+deploy, add the domain under Settings → Domains.
 
-## Adding subdomains for other projects (next step)
-
-Once you have separate projects (e.g. Vitalis Consulting, Sun Chaser), the cleanest approach on Vercel is:
-
-- **Separate Vercel projects**, each mapped to its own subdomain (`vitalis.yourdomain.com`, `sun.yourdomain.com`) via Domains settings — good if each project has its own codebase.
-- **One repo, Next.js middleware** that reads the `Host` header and rewrites to a `/sites/[subdomain]` folder — good if you want to manage everything from this one project.
-
-Happy to build out either approach when you're ready — let me know which project you want to wire up first.
+Each standalone project (Sun Chaser, future ones) is its own repo and its own
+Vercel project — this site only links out to them and hosts the write-up.

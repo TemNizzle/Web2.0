@@ -1,5 +1,7 @@
 import type { Config } from "tailwindcss";
 
+// Colours are CSS variables defined in app/globals.css (light + dark via
+// prefers-color-scheme). Names here are stable; the values move with the theme.
 const config: Config = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,19 +10,26 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#10151B",
-        surface: "#171E26",
-        "surface-hover": "#1D2530",
-        border: "#2A323C",
-        primary: "#ECE8DE",
-        secondary: "#8D95A0",
-        accent: "#C9A961",
-        "accent-dim": "#8F824F",
+        bg: "var(--bg)",
+        surface: "var(--surface)",
+        border: "var(--border)",
+        rule: "var(--rule)",
+        primary: "var(--primary)",
+        secondary: "var(--secondary)",
+        muted: "var(--muted)",
+        faint: "var(--faint)",
+        accent: "var(--accent)",
+        "accent-hover": "var(--accent-hover)",
+        grow: "var(--grow)",
       },
       fontFamily: {
         display: ["var(--font-display)", "sans-serif"],
-        serif: ["var(--font-serif)", "serif"],
-        mono: ["var(--font-mono)", "monospace"],
+        serif: ["var(--font-serif)", "Georgia", "serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
+      },
+      maxWidth: {
+        measure: "640px",
+        catalog: "712px",
       },
     },
   },

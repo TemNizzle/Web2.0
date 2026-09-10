@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Space_Grotesk, Source_Serif_4, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
 const display = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-display",
 });
 
 const serif = Source_Serif_4({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "500", "600"],
   variable: "--font-serif",
 });
 
@@ -21,83 +22,85 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Damian — IT Cost Optimization & Technology Strategy",
+  metadataBase: new URL("https://vitalistechnology.com"),
+  title: {
+    default: "Damian Vidal — projects and thoughts",
+    template: "%s — Damian Vidal",
+  },
   description:
-    "IT cost optimization and technology strategy for organizations that aren't in the business of technology.",
+    "Damian Vidal: fifteen years in IT leadership, now consulting, building small tools, and writing about both.",
+  alternates: {
+    types: { "application/rss+xml": "/feed.xml" },
+  },
   icons: {
     icon: [
-      { url: "/vitalis-icon.svg", type: "image/svg+xml" },
       { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
       { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
-    ],
-    apple: [
-      { url: "/vitalis-icon-180.png", sizes: "180x180", type: "image/png" },
     ],
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const nav = [
+  { href: "/essays", label: "Essays" },
+  { href: "/notes", label: "Notes" },
+  { href: "/projects", label: "Projects" },
+  { href: "/now", label: "Now" },
+  { href: "/about", label: "About" },
+];
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body
         className={`${display.variable} ${serif.variable} ${mono.variable} font-serif`}
       >
-        <header className="border-b border-border">
-          <div className="max-w-[760px] mx-auto px-7 py-6 flex items-center justify-between">
-            <a href="/" className="font-display font-semibold text-base">
-              Vitalis Technology<span className="text-accent"></span>
-            </a>
-            <nav className="flex gap-7">
-              <a
-                href="/blog"
-                className="font-mono text-[12.5px] uppercase tracking-wider text-secondary hover:text-primary transition-colors"
-              >
-                Blog
-              </a>
-              <a
-                href="/#projects"
-                className="font-mono text-[12.5px] uppercase tracking-wider text-secondary hover:text-primary transition-colors"
-              >
-                Projects
-              </a>
-              <a
-                href="/about"
-                className="font-mono text-[12.5px] uppercase tracking-wider text-secondary hover:text-primary transition-colors"
-              >
-                About
-              </a>
+        <header className="border-b-[1.5px] border-rule">
+          <div className="max-w-catalog mx-auto px-[30px] py-[18px] flex items-baseline justify-between gap-4">
+            <Link
+              href="/"
+              className="font-display font-bold text-[15px] tracking-[0.02em] text-primary"
+            >
+              DAMIAN VIDAL
+            </Link>
+            <nav className="flex flex-wrap gap-x-[18px] gap-y-1 justify-end">
+              {nav.map((n) => (
+                <Link
+                  key={n.href}
+                  href={n.href}
+                  className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-muted hover:text-primary transition-colors"
+                >
+                  {n.label}
+                </Link>
+              ))}
             </nav>
           </div>
         </header>
 
-        <section className="border-b border-border">
-          <div className="max-w-[760px] mx-auto px-7 py-6 flex justify-center">
-            <a
-              href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3RYzWv-yZX9WSUnoAr8sFBV-YmpzKmx_gL-RoD7ojp28JJBAj-HRVkRhXxKpSwUYOT50idFV1u"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-mono text-[12.5px] uppercase tracking-wider text-bg bg-accent hover:bg-accent-dim transition-colors px-6 py-3.5 rounded"
-            >
-              Book a free 15-min discovery call
-            </a>
-          </div>
-        </section>
-
         <main>{children}</main>
 
-        <footer className="border-t border-border">
-          <div className="max-w-[760px] mx-auto px-7 py-8 flex items-center justify-between font-mono text-xs text-secondary">
-            <span>© 2026 Vitalis Technology — Toronto, ON</span>
-            <span className="flex gap-5">
-              <a href="mailto:d.vidal@outlook.com" className="hover:text-primary transition-colors">
+        <footer className="border-t-[1.5px] border-rule mt-20">
+          <div className="max-w-catalog mx-auto px-[30px] py-8 flex flex-wrap items-baseline justify-between gap-3 font-mono text-[11px] text-muted">
+            <span>© 2026 Damian Vidal — Toronto, ON</span>
+            <span className="flex gap-4">
+              <Link href="/consulting" className="hover:text-primary transition-colors">
+                Consulting
+              </Link>
+              <a
+                href="mailto:d.vidal@outlook.com"
+                className="hover:text-primary transition-colors"
+              >
                 Email
               </a>
-              <a href="https://www.linkedin.com/in/dcvidal/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+              <a
+                href="https://www.linkedin.com/in/dcvidal/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-primary transition-colors"
+              >
                 LinkedIn
+              </a>
+              <a href="/feed.xml" className="hover:text-primary transition-colors">
+                RSS
               </a>
             </span>
           </div>
