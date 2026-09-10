@@ -1,22 +1,41 @@
-export const metadata = {
-  title: "About — Damian",
-};
+export const metadata = { title: "About" };
 
 export default function About() {
   return (
-    <div className="max-w-[680px] mx-auto px-7 py-16">
-      <h1 className="font-display font-medium text-2xl mb-6">About</h1>
-      <p className="text-[17px] leading-relaxed text-secondary mb-5">
-        I&apos;m an independent IT consultant based in Toronto, working with
-        organizations that aren&apos;t in the business of technology — but
-        depend on it anyway.
-      </p>
-      <p className="text-[17px] leading-relaxed text-secondary">
-        Over 15+ years in IT leadership, I&apos;ve learned that most
-        technology budgets don&apos;t need to grow — they need to be
-        re-examined. That&apos;s the work: cost optimization and technology
-        strategy that funds what&apos;s next without asking for more budget.
-      </p>
+    <div className="max-w-measure mx-auto px-[30px] pt-11">
+      <h1 className="font-display font-semibold text-[25px] mb-6">About</h1>
+
+      <div className="prose-custom text-[16px] leading-[1.75] text-primary">
+        <p>
+          I&rsquo;m Damian Vidal. I&rsquo;ve spent fifteen years in IT leadership,
+          mostly at organizations that aren&rsquo;t in the business of technology
+          but depend on it anyway. I&rsquo;m based in Toronto.
+        </p>
+        <p>
+          These days I do three things: I consult with finance leaders on IT cost
+          and technology strategy, I build small tools when a problem annoys me
+          enough, and I write about what I learn doing both. This site is where
+          that work lives.
+        </p>
+        <p>
+          The thread running through all of it: most technology budgets
+          don&rsquo;t need to grow, they need to be re-examined &mdash; and most
+          products are more trustworthy when they&rsquo;re honest about what they
+          don&rsquo;t know.
+        </p>
+        <p>
+          Reach me at{" "}
+          <a href="mailto:d.vidal@outlook.com">d.vidal@outlook.com</a> or on{" "}
+          <a
+            href="https://www.linkedin.com/in/dcvidal/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LinkedIn
+          </a>
+          .
+        </p>
+      </div>
     </div>
   );
 }

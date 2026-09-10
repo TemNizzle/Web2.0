@@ -1,106 +1,183 @@
-import { getLatestPost, getAllPostsMeta } from "@/lib/posts";
+import Link from "next/link";
+import {
+  getEssays,
+  getNotes,
+  getProjects,
+  getRecentThinking,
+  getNow,
+} from "@/lib/content";
+import {
+  CatalogEntry,
+  GrowthDot,
+  formatDate,
+  shortDate,
+  stageLabel,
+} from "@/components/catalog";
 
-const projects = [
-  {
-    name: "Sun Chaser",
-    desc: "Find sunny patios in Toronto and spend time outside.",
-    href: "https://sun.vitalistechnology.com",
-    status: "",
-  },
-];
+export default async function Home() {
+  const essays = getEssays();
+  const notes = getNotes();
+  const projects = getProjects();
+  const recent = getRecentThinking(6);
+  const now = await getNow();
 
-export default function Home() {
-  const latest = getLatestPost();
-  const entryNumber = getAllPostsMeta().length;
+  const essayNum = new Map(
+    essays.map((e, i) => [e.slug, `No. ${String(essays.length - i).padStart(3, "0")}`])
+  );
+  const noteNum = new Map(
+    notes.map((n, i) => [n.slug, `N-${String(notes.length - i).padStart(2, "0")}`])
+  );
+
+  const [specimen, ...rest] = recent;
 
   return (
-    <div className="max-w-[760px] mx-auto px-7">
-      <section className="pt-20 pb-16">
-        <h1 className="font-display font-medium text-[34px] leading-[1.28] tracking-tight max-w-[620px]">
-          IT spend optimization for finance leaders who
-          didn&apos;t sign up to manage a tech budget.
-        </h1>
-        <p className="mt-5 text-[17px] text-secondary max-w-[520px] leading-relaxed">
-          Every month you delay aligning IT with your business
-          objectives, vendor auto-renewals compound and your
-          options narrow. I help you find the budget already
-          inside your existing spend —
-          before the decision gets made under pressure.
-        </p>
-        <div className="mt-7 font-mono text-[13.5px] text-accent-dim leading-relaxed">
-          Past clients have cut operational spend by 30% and reduced downtime by 66%
+    <div className="max-w-catalog mx-auto px-[30px] pb-4">
+      {/* hero */}
+      <section className="grid grid-cols-1 sm:grid-cols-[96px_1fr] gap-3 sm:gap-[22px] pt-11 pb-9">
+        <div className="kicker sm:pt-1.5">
+          Index<span className="hidden sm:inline"><br /></span>
+          <span className="sm:hidden"> </span>of work
+        </div>
+        <div>
+          <h1 className="font-display font-semibold text-[26px] leading-[1.3] max-w-[24ch]">
+            Consulting, small tools, and notes on both.
+          </h1>
+          <p className="mt-3.5 text-[15px] leading-relaxed text-secondary max-w-[50ch]">
+            Fifteen years in IT leadership, now independent in Toronto. Everything
+            I&rsquo;ve filed &mdash; essays, working notes, projects &mdash; is
+            catalogued below.
+          </p>
         </div>
       </section>
 
-      {latest && (
-        <section className="py-12 border-t border-border">
-          <div className="flex justify-between mb-5 font-mono text-xs uppercase tracking-widest text-secondary">
-            <span>Latest entry</span>
-            {/* <span className="text-accent-dim">
-             No. {String(entryNumber).padStart(3, "0")}
-            </span> */}
+      {/* now */}
+      {now.contentHtml && (
+        <section className="grid grid-cols-1 sm:grid-cols-[96px_1fr] gap-2 sm:gap-[22px] border-t border-border py-7">
+          <div className="kicker sm:pt-1">
+            Now
+            {now.updated && (
+              <span className="sm:block"> &middot; {formatDate(now.updated)}</span>
+            )}
           </div>
-          <a href={`/blog/${latest.slug}`} className="block">
-            <div className="entry-card relative bg-surface border border-border rounded hover:border-accent-dim hover:bg-surface-hover transition-colors p-9">
-              <div className="stamp absolute top-6 right-7 w-[78px] h-[78px] border border-dashed border-accent-dim rounded-full flex items-center justify-center text-accent-dim">
-                <div className="text-center font-mono text-[8.5px] uppercase tracking-wider leading-relaxed">
-                  Filed
-                  <b className="block text-[9.5px] text-accent font-medium">
-                    {new Date(latest.date)
-                      .toLocaleDateString("en-CA", {
-                        year: "2-digit",
-                        month: "2-digit",
-                        day: "2-digit",
-                      })
-                      .replace(/-/g, ".")}
-                  </b>
-                </div>
-              </div>
-              <h2 className="font-display font-medium text-[23px] max-w-[440px] leading-snug">
-                {latest.title}
-              </h2>
-              <p className="mt-3.5 text-base text-secondary max-w-[460px]">
-                {latest.excerpt}
-              </p>
-              <div className="mt-5 font-mono text-xs text-secondary">
-                {latest.date} &nbsp;·&nbsp; {latest.readingTime} &nbsp;·&nbsp;{" "}
-                {latest.tag}
-              </div>
-              <span className="read-link inline-block mt-5 font-mono text-[12.5px] text-accent">
-                Read entry →
-              </span>
-            </div>
-          </a>
+          <div
+            className="prose-custom text-[14.5px] leading-relaxed text-secondary [&_p]:mb-3 [&_p:last-child]:mb-0 max-w-[52ch]"
+            dangerouslySetInnerHTML={{ __html: now.contentHtml }}
+          />
         </section>
       )}
 
-      <section id="projects" className="py-12 border-t border-border">
-        <div className="mb-5 font-mono text-xs uppercase tracking-widest text-secondary">
-          Projects
-        </div>
-        <div className="flex flex-col">
-          {projects.map((p, i) => (
-            <a
-              key={p.name}
-              href={p.href}
-              target={p.href.startsWith("http") ? "_blank" : undefined}
-              rel={p.href.startsWith("http") ? "noopener noreferrer" : undefined}
-              className={`flex justify-between items-baseline gap-6 py-5 ${i !== 0 ? "border-t border-border" : ""
-                }`}
-            >
-              <span className="font-display font-medium text-[17px] whitespace-nowrap">
-                {p.name}
+      {/* specimen — latest entry */}
+      {specimen && (
+        <section className="pt-7">
+          <Link
+            href={
+              specimen.kind === "essay"
+                ? `/essays/${specimen.slug}`
+                : `/notes/${specimen.slug}`
+            }
+            className="block border border-border bg-surface p-6 hover:border-accent transition-colors group"
+          >
+            <div className="flex justify-between items-baseline gap-3">
+              <span className="kicker">Latest entry</span>
+              <span className="entry-num">
+                {specimen.kind === "essay"
+                  ? essayNum.get(specimen.slug)
+                  : noteNum.get(specimen.slug)}
               </span>
-              <span className="text-sm text-secondary flex-1">{p.desc}</span>
-              {p.status ? (
-                <span className="font-mono text-[11px] uppercase tracking-wider text-accent-dim whitespace-nowrap">
-                  {p.status}
-                </span>
+            </div>
+            <h2 className="font-display font-semibold text-[21px] leading-snug mt-3.5 max-w-[30ch] group-hover:text-accent transition-colors">
+              {specimen.title}
+            </h2>
+            <p className="mt-2 text-[14.5px] leading-relaxed text-secondary max-w-[54ch]">
+              {specimen.excerpt}
+            </p>
+            <div className="mt-3.5 font-mono text-[11.5px] text-muted flex items-center gap-2">
+              {specimen.kind === "essay" ? (
+                <>
+                  Essay &middot; {formatDate(specimen.date)} &middot;{" "}
+                  {specimen.readingTime} &middot; {specimen.tag}
+                </>
               ) : (
-                <span className="font-mono text-sm text-secondary">→</span>
+                <>
+                  <GrowthDot stage={specimen.stage} size={11} />
+                  Note &middot; {stageLabel(specimen.stage)} &middot; tended{" "}
+                  {formatDate(specimen.date)}
+                </>
               )}
-            </a>
+            </div>
+          </Link>
+        </section>
+      )}
+
+      {/* catalogue */}
+      {rest.length > 0 && (
+        <section className="pt-9">
+          <div className="kicker mb-1">Catalogue</div>
+          {rest.map((item) =>
+            item.kind === "essay" ? (
+              <CatalogEntry
+                key={`e-${item.slug}`}
+                href={`/essays/${item.slug}`}
+                num={essayNum.get(item.slug) ?? ""}
+                badge="Essay"
+                meta={shortDate(item.date)}
+                title={item.title}
+                excerpt={item.excerpt}
+              />
+            ) : (
+              <CatalogEntry
+                key={`n-${item.slug}`}
+                href={`/notes/${item.slug}`}
+                num={noteNum.get(item.slug) ?? ""}
+                badge="Note"
+                meta={
+                  <>
+                    tended
+                    <br />
+                    {shortDate(item.date)}
+                  </>
+                }
+                title={item.title}
+                excerpt={item.excerpt}
+              />
+            )
+          )}
+        </section>
+      )}
+
+      {/* projects */}
+      {projects.length > 0 && (
+        <section className="pt-9">
+          <div className="kicker mb-1">Projects</div>
+          {projects.map((p, i) => (
+            <CatalogEntry
+              key={p.slug}
+              href={`/projects/${p.slug}`}
+              num={`P-${String(projects.length - i).padStart(2, "0")}`}
+              badge="Project"
+              meta={p.status || "—"}
+              accentMeta={p.status.toLowerCase() === "live"}
+              title={p.name}
+              excerpt={p.summary}
+            />
           ))}
+        </section>
+      )}
+
+      {/* consulting — secondary */}
+      <section className="grid grid-cols-1 sm:grid-cols-[96px_1fr] gap-2 sm:gap-[22px] border-t-[1.5px] border-rule mt-2 pt-7">
+        <div className="kicker sm:pt-5">Consulting</div>
+        <div className="sm:pt-[18px]">
+          <p className="text-[15px] leading-relaxed max-w-[50ch]">
+            I also help finance leaders find the budget already inside their
+            existing IT spend. Past engagements have cut operational spend by 30%.
+          </p>
+          <Link
+            href="/consulting"
+            className="inline-block mt-3 font-mono text-[12px] text-accent hover:text-accent-hover hover:underline"
+          >
+            How I work &rarr;
+          </Link>
         </div>
       </section>
     </div>

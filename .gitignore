@@ -7,3 +7,6 @@ out
 tsconfig.tsbuildinfo
 .claude
 
+# design-canvas working files (re-seeded from the published Artifact when needed)
+design-canvas
+
